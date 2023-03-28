@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  $(document).ready(function() {
+    $.getJSON("https://api.coindesk.com/v1/bpi/currentprice.json", function(data) {
+      $("#price").html("1 BTC = $" + data.bpi.USD.rate_float.toFixed(2) + " USD");
+    });
+  });
+  </script>
+</head>
+<body>
+  <div id="price"></div>
+  <button id="btn">Get Data</button>
+</body>
+</html>
