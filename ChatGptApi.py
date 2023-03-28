@@ -5,7 +5,7 @@ import openai
 # yaml_file = open('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', 'r')  
 # p = yaml.load(yaml_file, Loader=yaml.FullLoader)
 # openai.api_key = p['api_key']
-openai.api_key = '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'
+openai.api_key = 'sk-XXXXXXXX'
 
 # show available models
 modellist = openai.Model.list()
