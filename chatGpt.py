@@ -4,7 +4,7 @@ import json
 # Replace YOUR_API_KEY with your OpenAI API key
 headers = {
   'Content-Type': 'application/json',
-  "Authorization": "Bearer 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"
+  "Authorization": "Bearer sk-XXXXXXXXX"
 }
 
 # Define the parameters for the request
