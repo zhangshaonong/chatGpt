@@ -1,0 +1,97 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>DALL-E 画像作成</title>
+<style>
+<!--
+table		{border-collapse:collapse;}
+th.cont		{background-color:#339999;color:#FFFFFF; text-align: center;}
+th.hikaku	{background-color:#000099;color:#FFFFFF; text-align: center;}
+td.name		{font-size:x-small;}
+td.num		{font-size:x-small; text-align: right;}
+td.date		{font-size:x-small;}
+td.tyuou	{font-size:x-small; text-align: center;}
+textarea {
+  resize: none;
+  width:300px;
+  height:200px;
+}
+-->
+</style>
+<script src="jquery-3.6.0.min.js"></script>
+<script>
+$( function() {
+
+
+  $("#getanwser").click(function(){
+   
+    $("#anwser").text('');
+    quetionValue = $('#question').val();
+    // API呼び出し用のパラメータ
+    const parameters = {
+      prompt: quetionValue,
+      num_images: 1,
+      size: "512x512",
+      response_format: "url"
+    };
+
+    // APIエンドポイントURL
+    const urlStr = "https://api.openai.com/v1/images/generations";
+
+    // API呼び出し
+    $.ajax({
+      type: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer sk-XXXXXXXX'
+      },
+      url: urlStr,
+      data: JSON.stringify(parameters),
+      success: function(data) {
+        // 結果を表示
+        // const result = data.choices[0].text.trim();
+        const result = data['data'][0]['url'];
+        $("#anwser").text(result);
+
+        console.log(result);
+      },
+      error: function(xhr, status, error) {
+        console.log('error');
+      }
+    });
+
+  });
+
+  $("#imgUrlShow").click(function(){
+    // リンクを新しいタブで開く
+    window.open( $('#anwser').val(), "_blank");
+  });
+
+});
+
+</script>
+
+</head>
+<body>
+  <h1>DELL-E2 APIシステム</h1>
+
+<textarea id="question" form="usrform">A beautiful sunset over the mountains</textarea>
+<br>
+<textarea id="anwser" form="usrform">www.google.co.jp</textarea>
+<br>
+ 
+  <button id="getanwser">Get Answer Content</button>
+  <button id="imgUrlShow">ここをクリックして、画像を取得する</button>
+
+<div id="div1"><h2>Let jQuery AJAX Change This Text</h2></div>
+
+<button id="getaAwser>Get Answer Content</button>
+
+
+<br>
+
+
+</body>
+</html>
+
