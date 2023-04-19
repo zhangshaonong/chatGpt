@@ -1,0 +1,111 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>OpenAI 質問</title>
+<style>
+<!--
+table		{border-collapse:collapse;}
+th.cont		{background-color:#339999;color:#FFFFFF; text-align: center;}
+th.hikaku	{background-color:#000099;color:#FFFFFF; text-align: center;}
+td.name		{font-size:x-small;}
+td.num		{font-size:x-small; text-align: right;}
+td.date		{font-size:x-small;}
+td.tyuou	{font-size:x-small; text-align: center;}
+textarea {
+  resize: none;
+  width:300px;
+  height:200px;
+}
+-->
+</style>
+<script src="jquery-3.6.0.min.js"></script>
+<script src="js-yaml.min.js"></script>
+<script>
+$( function() {
+
+  // グローバル変数の定義
+  var apikeystr = "";
+
+  $(document).ready(function() {
+    // 使用jQuery的 $.ajax() 方法从服务器获取YAML文件内容
+    $.ajax({
+      url: 'env.yaml',
+      dataType: 'text',
+      success: function(data) {
+        try {
+          const parsedYaml = jsyaml.load(data);
+          console.log(parsedYaml);
+          apikeystr=parsedYaml.Authorization;
+        } catch (e) {
+          console.error('Error parsing YAML:', e);
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error('Error loading YAML:', error);
+      }
+    });
+  });
+
+  $("button").click(function(){
+   
+    $("#anwser").text('');
+    quetionValue = $('#question').val();
+    // API呼び出し用のパラメータ
+    const parameters = {
+      prompt: quetionValue,
+      temperature: 0.5,
+      max_tokens: 2000,
+      top_p: 1,
+      num_completions: 1,
+      stop: '.',
+      model: 'text-davinci-003'
+    };
+
+    // APIエンドポイントURL
+    const endpoint = 'https://api.openai.com/v1/completions';
+
+    // API呼び出し
+    $.ajax({
+      type: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apikeystr
+      },
+      url: endpoint,
+      data: JSON.stringify(parameters),
+      success: function(data) {
+        // 結果を表示
+        const result = data.choices[0].text.trim();
+        $("#anwser").text(result);
+        console.log(result);
+      },
+      error: function(xhr, status, error) {
+        console.log('error');
+      }
+    });
+
+  });
+
+});
+
+</script>
+
+</head>
+<body>
+<h1>CHATGPT APIシステム</h1>
+
+<textarea id="question" form="usrform">what is your name?</textarea>
+<br>
+<textarea id="anwser" form="usrform">anwser</textarea>
+<div id="div1"><h2>Let jQuery AJAX Change This Text</h2></div>
+
+<button>Get Answer Content</button>
+
+
+<br>
+
+
+</body>
+</html>
+
